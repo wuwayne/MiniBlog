@@ -1,20 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
 {% extends "head.html" %}
-    {% block title %}知识系统登录{% endblock %}
+{% block title %}知识库系统登录{% endblock %}
 {% block body %}
   <body class="text-center">
-    <link href="../static/css/signin.css" rel="stylesheet">
-    <form action="/signin/" method="POST" class="form-signin">
+    <link href="../static/css/login.css" rel="stylesheet">
+    <form action="/login/" method="POST" class="form-signin">
       <h1 class="h3 mb-3 font-weight-normal">登录</h1>
       <label for="username" class="sr-only">username</label>
       <input type="username" name="username" id="inputUsername" class="form-control" placeholder="用户名" required autofocus>
       <label for="inputPassword" class="sr-only">password</label>
       <input type="password" name="password" id="inputPassword" class="form-control" placeholder="密码" required>
       <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="remember-me"> 记住我
-        </label>
+        <p>还没有账号？<a href={{url_for('views.register')}}>立即注册！</a></p>
+        <p style="color:red">
+          <!-- <input type="checkbox" value="remember-me"> 记住我 -->
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              {% for message in messages %}
+                {{ message }}
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </p>
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
     </form>

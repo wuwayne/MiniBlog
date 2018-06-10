@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask,abort
 
 
 def create_app(test_config=None):
@@ -10,7 +10,7 @@ def create_app(test_config=None):
         # a default secret that should be overridden by instance config
         SECRET_KEY='dev',
         # store the database in the instance folder
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        DATABASE=os.path.join(app.instance_path, 'KBS.sqlite'),
     )
 
     if test_config is None:
@@ -26,23 +26,15 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    @app.route('/secret/')
+    def secret():
+        abort(401)
 
     # register the database commands
-    from flaskr import db
+    from KBS import db
     db.init_app(app)
 
-    # apply the blueprints to the app
-    from flaskr import auth, blog
-    app.register_blueprint(auth.bp)
-    app.register_blueprint(blog.bp)
-
-    # make url_for('index') == url_for('blog.index')
-    # in another app, you might define a separate main index here with
-    # app.route, while giving the blog blueprint a url_prefix, but for
-    # the tutorial the blog will be the main index
-    # app.add_url_rule('/', endpoint='signin')
+    from KBS import views
+    app.register_blueprint(views.bp)
 
     return app
