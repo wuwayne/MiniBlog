@@ -13,3 +13,4 @@ build/
 *.swp
 *~
 Pipfile
+.DS_Store

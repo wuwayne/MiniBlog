@@ -19,9 +19,9 @@ class RegistrationForm(FlaskForm):
 	def validate_username(self,username):
 		user = User.query.filter_by(username=username.data).first()
 		if user:
-			raise ValidationError('Please use a different username.')
+			raise ValidationError('用户名已被注册！')
 
 	def validate_email(self,email):
 		email = User.query.filter_by(email=email.data).first()
 		if email:
-			raise ValidationError('Please use a different email address.')
+			raise ValidationError('邮箱已被注册！')
