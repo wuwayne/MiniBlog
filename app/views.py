@@ -122,3 +122,10 @@ def unfollow(username):
 	db.session.commit()
 	flash("已取消关注{}!".format(username))
 	return redirect(url_for('user',username=username))
+
+
+@app.route('/explore')
+@login_required
+def explore():
+	posts = Post.query.order_by(Post.timestamp.desc()).all()
+	return render_template('index.html',title='发现',posts=posts)

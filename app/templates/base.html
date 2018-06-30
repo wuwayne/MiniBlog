@@ -11,6 +11,7 @@
         <div>
             MiniBlog:
             <a href="{{ url_for('index') }}">主页</a>
+            <a href="{{ url_for('explore') }}">发现</a>
             {% if current_user.is_anonymous %}
             <a href="{{ url_for('login') }}">登陆</a>
             {% else %}
