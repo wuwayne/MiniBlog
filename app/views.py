@@ -20,8 +20,15 @@ def index():
 		db.session.commit()
 		flash("发布成功！")
 		return redirect(url_for('index'))
-	posts = current_user.followed_posts().all()
-	return render_template('index.html', posts=posts,form=form)
+
+	page = request.args.get('page',1,type=int)
+	posts = current_user.followed_posts().paginate(
+		page,app.config['POSTS_PER_PAGE'],False)
+
+	next_url = url_for('index',page=posts.next_num) if posts.has_next else None
+	prev_url = url_for('index',page=posts.prev_num) if posts.has_prev else None
+
+	return render_template('index.html', posts=posts.items,form=form,next_url=next_url,prev_url=prev_url)
 
 
 @app.route('/login',methods=['GET','POST'])
@@ -67,8 +74,16 @@ def logout():
 @login_required
 def user(username):
 	user = User.query.filter_by(username=username).first_or_404()
-	posts = user.posts
-	return render_template('user.html',user=user,posts=posts)
+
+	page = request.args.get('page',1,type=int)
+	posts = user.posts.order_by(Post.timestamp.desc()).paginate(
+		page,app.config['POSTS_PER_PAGE'],False)
+
+	next_url = url_for('user',username=username,page=posts.next_num) if posts.has_next else None
+	prev_url = url_for('user',username=username,page=posts.prev_num) if posts.has_prev else None
+
+	return render_template('user.html',user=user,posts=posts.items,next_url=next_url, prev_url=prev_url)
+
 
 
 @app.before_request
@@ -127,5 +142,11 @@ def unfollow(username):
 @app.route('/explore')
 @login_required
 def explore():
-	posts = Post.query.order_by(Post.timestamp.desc()).all()
-	return render_template('index.html',title='发现',posts=posts)
+	page = request.args.get('page',1,type=int)
+	posts = Post.query.order_by(Post.timestamp.desc()).paginate(
+		page,app.config['POSTS_PER_PAGE'],False)
+
+	next_url = url_for('explore',page=posts.next_num) if posts.has_next else None
+	prev_url = url_for('explore',page=posts.prev_num) if posts.has_prev else None
+
+	return render_template('index.html',title='发现',posts=posts.items,next_url=next_url, prev_url=prev_url)
