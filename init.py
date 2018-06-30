@@ -1,7 +1,6 @@
 import os
 import sys
 
-# import KBS
 
 def init_env(appname,migrate=True):
 	if os.name == 'nt':

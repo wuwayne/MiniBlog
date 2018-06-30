@@ -1,2 +1,2 @@
-# KBS
-A basic knowledge base system which is not finished!
+# MiniBlog
+A  MiniBlog system which is not finished!

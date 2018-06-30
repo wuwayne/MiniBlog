@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hello, {{ current_user.username }}!</h1>
+    <h1>你好, {{ current_user.username }}!</h1>
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <p>

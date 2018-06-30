@@ -4,12 +4,12 @@
         {% if title%}
         <title>{{ title }}</title>
         {% else %}
-        <title>知识库系统</title>
+        <title>MiniBlog</title>
         {% endif %}
     </head>
     <body>
         <div>
-            知识库系统:
+            MiniBlog:
             <a href="{{ url_for('index') }}">主页</a>
             {% if current_user.is_anonymous %}
             <a href="{{ url_for('login') }}">登陆</a>
