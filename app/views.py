@@ -7,6 +7,7 @@ from werkzeug.urls import url_parse
 from app import app,db
 from app.forms import LoginForm,RegistrationForm,EditProfileForm,PostForm
 from app.models import User,Post
+from app.email import send_mail
 
 
 @app.route('/',methods=['GET', 'POST'])
@@ -150,3 +151,4 @@ def explore():
 	prev_url = url_for('explore',page=posts.prev_num) if posts.has_prev else None
 
 	return render_template('index.html',title='发现',posts=posts.items,next_url=next_url, prev_url=prev_url)
+

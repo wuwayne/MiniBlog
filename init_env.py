@@ -5,17 +5,15 @@ import sys
 def init_env(appname,migrate=True):
 	if os.name == 'nt':
 		os.system('set FLASK_APP={}'.format(appname))
-		os.system('set FLASK_ENV=development')
 
 	if os.name == 'posix':
 		os.system('export FLASK_APP={}'.format(appname))
-		os.system('export FLASK_ENV=development')
-		
+
 	if migrate:
 		os.system('flask db migrate')		
 		os.system('flask db upgrade')
 
-	
+	os.system('set FLASK_ENV=development')
 	os.system('flask run')
 
 if __name__ == '__main__':

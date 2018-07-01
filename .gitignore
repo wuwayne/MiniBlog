@@ -14,3 +14,4 @@ build/
 *~
 Pipfile
 .DS_Store
+init_mail.py
