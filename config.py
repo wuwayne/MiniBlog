@@ -13,6 +13,6 @@ class Config(object):
 	MAIL_USE_SSL = os.environ.get('MAIL_USE_SSL') is not None
 	MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
 	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-	ADMINS = ['wulove@gmail.com']
+	ADMINS = ['wayne_we@163.com','wulove5@gmail.com']
 
 	POSTS_PER_PAGE = 10
