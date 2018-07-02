@@ -35,3 +35,6 @@ class PostForm(FlaskForm):
 	post = TextAreaField('说点什么',validators=[DataRequired(),Length(min=1,max=140)])
 	submit = SubmitField('提交')
 
+class ResetPWDForm(FlaskForm):
+	email = StringField('Email', validators=[DataRequired(), Email()])
+	submit = SubmitField('重置')

@@ -5,7 +5,7 @@ from flask_login import login_user,logout_user,current_user,login_required
 from werkzeug.urls import url_parse
 
 from app import app,db
-from app.forms import LoginForm,RegistrationForm,EditProfileForm,PostForm
+from app.forms import LoginForm,RegistrationForm,EditProfileForm,PostForm,ResetPWDForm
 from app.models import User,Post
 from app.email import send_mail
 
@@ -152,3 +152,18 @@ def explore():
 
 	return render_template('index.html',title='发现',posts=posts.items,next_url=next_url, prev_url=prev_url)
 
+@app.route('/reset_password',methods=['GET', 'POST'])
+def reset_password():
+	if current_user.is_authenticated:
+		return redirect(url_for('index'))
+	form = ResetPWDForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(email=form.email.data).first()
+		if user:
+			send_password_reset_email(user)
+			flash("重置链接已发送至邮箱中！")
+			return redirect(url_for('login'))
+		else:
+			flash("该邮箱未注册！")
+			return redirect(url_for('reset_password'))
+	return render_template("eset_password.html',title='重置密码',form=form")
