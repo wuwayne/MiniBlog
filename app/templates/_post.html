@@ -9,7 +9,7 @@
                 <a href="{{ url_for('user', username=post.author.username) }}">
                     {{ post.author.username }}
                 </a>
-                说:
+                {{ moment(post.timestamp).fromNow() }}说:
                 <br>
                 {{ post.body }}
             </td>
