@@ -29,5 +29,5 @@ from app import views,models,errors,email
 
 @babel.localeselector
 def get_locale():
-	# return request.accept_languages.best_match(app.config['LANGUAGES'])
-	return 'en'#use for test
+	return request.accept_languages.best_match(app.config['LANGUAGES'])
+	# return "en"#use for test
