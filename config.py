@@ -16,7 +16,7 @@ class Config(object):
 
 	ADMINS = ['wayne_we@163.com','wulove5@gmail.com']
 
-	POSTS_PER_PAGE = 10
+	POSTS_PER_PAGE = 15
 
 	LANGUAGES = ['en','zh']
 
