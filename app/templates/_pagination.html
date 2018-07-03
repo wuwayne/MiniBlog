@@ -1,6 +1,14 @@
-{% if prev_url %}
-    <a href="{{ prev_url }}">上一页</a>
-{% endif %}
-{% if next_url %}
-    <a href="{{ next_url }}">下一页</a>
-{% endif %}
+<nav aria-label="Page navigation">
+    <ul class="pager">
+        <li class="previous{% if not prev_url %} disabled{% endif %}">
+            <a href="{{ prev_url or '#' }}">
+                上一页
+            </a>
+        </li>
+        <li class="next{% if not next_url %} disabled{% endif %}">
+            <a href="{{ next_url or '#' }}">
+                下一页
+            </a>
+        </li>
+    </ul>
+</nav>
