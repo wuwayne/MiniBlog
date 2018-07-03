@@ -3,6 +3,8 @@ from datetime import datetime
 from flask import render_template,flash,redirect,url_for,request
 from flask_login import login_user,logout_user,current_user,login_required
 from werkzeug.urls import url_parse
+from flask_babel import _
+from flask_babel import lazy_gettext as _l
 
 from app import app,db
 from app.forms import LoginForm,RegistrationForm,EditProfileForm,PostForm,ResetPasswordRequestForm,\
@@ -20,7 +22,7 @@ def index():
 		post = Post(body=form.post.data,author=current_user)
 		db.session.add(post)
 		db.session.commit()
-		flash("发布成功！")
+		flash(_("发布成功！"))
 		return redirect(url_for('index'))
 
 	page = request.args.get('page',1,type=int)
@@ -41,7 +43,7 @@ def login():
 	if form.validate_on_submit():
 		user = User.query.filter_by(username=form.username.data).first()
 		if user is None or not user.check_password(form.password.data):
-			flash('用户名或密码错误！')
+			flash(_('用户名或密码错误！'))
 			return redirect(url_for('login'))
 		login_user(user, remember=form.remember_me.data)
 		next_page = request.args.get('next')
@@ -61,7 +63,7 @@ def register():
 		user.set_password(form.password.data)
 		db.session.add(user)
 		db.session.commit()
-		flash('注册成功！')
+		flash(_('注册成功！'))
 		return redirect(url_for('index'))
 	return render_template('register.html',title='注册',form=form)
 
@@ -102,12 +104,12 @@ def edit_profile():
 	if form.validate_on_submit():
 		user = User.query.filter_by(username=form.username.data).first()
 		if not current_user.username == form.username.data and user :
-			flash('用户名已被注册！')
+			flash(_('用户名已被注册！'))
 			return render_template('edit_profile.html', title='个人主页',form=form)
 		current_user.username = form.username.data
 		current_user.about_me = form.about_me.data
 		db.session.commit()
-		flash('修改成功！')
+		flash(_('修改成功！'))
 		return redirect(url_for('user',username=current_user.username))
 	elif request.method == 'GET':
 		form.username.data = current_user.username
@@ -124,7 +126,7 @@ def follow(username):
 	# 	return redirect(url_for('user',username=username))
 	current_user.follow(user)
 	db.session.commit()
-	flash("已成功关注{}!".format(username))
+	flash(_("已成功关注%(username)s!",username=username))
 	return redirect(url_for('user',username=username))
 
 
@@ -137,7 +139,7 @@ def unfollow(username):
 	# 	return redirect(url_for('user',username=username))
 	current_user.unfollow(user)
 	db.session.commit()
-	flash("已取消关注{}!".format(username))
+	flash(_("已取消关注%(username)s!",username=username))
 	return redirect(url_for('user',username=username))
 
 
@@ -162,10 +164,10 @@ def reset_password_request():
 		user = User.query.filter_by(email=form.email.data).first()
 		if user:
 			send_password_reset_email(user)
-			flash("重置链接已发送至邮箱中！")
+			flash(_("重置链接已发送至邮箱中！"))
 			return redirect(url_for('login'))##到底跳转什么链接比较好？
 		else:
-			flash("该邮箱未注册！")
+			flash(_("该邮箱未注册！"))
 			return redirect(url_for('reset_password_request'))
 	return render_template('reset_password_request.html',title='重置密码',form=form)
 
@@ -181,6 +183,6 @@ def reset_password(token):
 	if form.validate_on_submit():
 		user.set_password(form.password.data)
 		db.session.commit()
-		flash("重置密码成功！")
+		flash(_("重置密码成功！"))
 		return redirect(url_for('login'))
 	return render_template('reset_password.html',form=form)
