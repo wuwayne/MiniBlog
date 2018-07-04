@@ -1,16 +1,18 @@
 from datetime import datetime
 
-from flask import render_template,flash,redirect,url_for,request,g
+from flask import render_template,flash,redirect,url_for,request,g,jsonify
 from flask_login import login_user,logout_user,current_user,login_required
 from werkzeug.urls import url_parse
 from flask_babel import _,get_locale
 from flask_babel import lazy_gettext as _l
+from guess_language import guess_language
 
 from app import app,db
 from app.forms import LoginForm,RegistrationForm,EditProfileForm,PostForm,ResetPasswordRequestForm,\
 ResetPasswordForm
 from app.models import User,Post
 from app.email import send_password_reset_email
+from app.translate import translate
 
 
 @app.route('/',methods=['GET', 'POST'])
@@ -19,7 +21,10 @@ from app.email import send_password_reset_email
 def index():
 	form = PostForm()
 	if form.validate_on_submit():
-		post = Post(body=form.post.data,author=current_user)
+		language = guess_language(form.post.data)
+		if language == 'UNKNOWN' or len(language) > 5:
+			language = ''
+		post = Post(body=form.post.data,author=current_user,language=language)
 		db.session.add(post)
 		db.session.commit()
 		flash(_("发布成功！"))
@@ -96,8 +101,8 @@ def before_request():
 		current_user.last_seen = datetime.utcnow()
 		db.session.commit()
 	g.locale = str(get_locale())
-	if g.locale == 'zh':
-		g.locale = 'zh_CN'
+	# if g.locale == 'zh':
+	# 	g.locale = 'zh_CN'
 
 @app.route('/edit_profile',methods=['GET', 'POST'])
 @login_required
@@ -188,3 +193,11 @@ def reset_password(token):
 		flash(_("重置密码成功！"))
 		return redirect(url_for('login'))
 	return render_template('reset_password.html',form=form)
+
+@app.route('/translate',methods=['POST'])
+@login_required
+def translate_text():
+	return jsonify({'text': translate(request.form['text'],
+									  request.form['source_language'],
+									  request.form['dest_language'])})
+
