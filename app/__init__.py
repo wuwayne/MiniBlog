@@ -22,12 +22,18 @@ bootstrap = Bootstrap(app)
 moment = Moment(app)
 babel = Babel(app)
 
-login.login_view = 'login'
+login.login_view = 'auth.login'
 login.login_message = _l('Please log in to access this page.')
 
-from app import views,models,errors,email
+from app.errors import bp as errors_bp
+app.register_blueprint(errors_bp)
+
+from app.auth import bp as auth_bp
+app.register_blueprint(auth_bp,url_prefix='/auth')
+
+from app import views,models
 
 @babel.localeselector
 def get_locale():
 	return request.accept_languages.best_match(app.config['LANGUAGES'])
-	# return "en"#use for test
+	# return "en"# used for test
