@@ -1,18 +1,18 @@
-    <table class="table table-hover">
-        <tr>
-            <td width="70px">
-                <a href="{{ url_for('main.user', username=post.author.username) }}">
-                    <img src="{{ post.author.avatar(70) }}" />
-                </a>
-            </td>
-            <td>
-                <a href="{{ url_for('main.user', username=post.author.username) }}">
-                    {{ post.author.username }}
-                </a>
-                （{{ moment(post.timestamp).fromNow() }}）{{_('说')}}:
-                <br>
-                <span id="post{{post.id}}">{{ post.body }}</span>
-                {% if post.language and post.language != g.locale %}
+<table class="table table-hover">
+    <tr>
+        <td width="70px">
+            <a href="{{ url_for('main.user', username=post.author.username) }}">
+                <img src="{{ post.author.avatar(70) }}" />
+            </a>
+        </td>
+        <td>
+            <a href="{{ url_for('main.user', username=post.author.username) }}">
+                {{ post.author.username }}
+            </a>
+            （{{ moment(post.timestamp).fromNow() }}）{{_('说')}}:
+            <br>
+            <span id="post{{post.id}}">{{ post.body }}</span>
+            {% if post.language and post.language != g.locale %}
                 <br><br>
                 <span id="translate{{post.id}}">
                     <a href="javascript:translate(
@@ -22,7 +22,8 @@
                                 '{{g.locale}}');">{{ _('Translate') }}
                     </a>
                 </span>
-                {% endif %}
-            </td>
-        </tr>
-    </table>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+    

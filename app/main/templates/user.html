@@ -9,18 +9,19 @@
             	{% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
                 {% if user.last_seen %}<p>{{_("上一次访问")}}: {{ moment(user.last_seen).format('LLL') }}</p>{% endif %}
                 <p>{{_("粉丝")}}：
-                    <a href="{{ url_for('main.follower_list',username=user.username) }}">{{ user.followers.count() }}</a> 
+                    <a id="follower_num" href="{{ url_for('main.follower_list',username=user.username) }}">{{ user.followers.count() }}</a> 
                     |
                     {{_("关注")}}：
-                    <a href="{{ url_for('main.followed_list',username=user.username) }}">{{ user.followed.count() }} </a>
+                    <a id="followed_num" href="{{ url_for('main.followed_list',username=user.username) }}">{{ user.followed.count() }} </a>
                 </p>
                 {% if user == current_user %}
                     <p><a href="{{ url_for('main.edit_profile') }}">{{_("编辑")}}</a></p>
                 {% elif current_user.is_following(user) %}
-                    <p><a href="{{ url_for('main.unfollow', username=user.username) }}">{{_("取消关注")}}</a></p>
+                    <p><a href="javascript:unfollow('{{user.username}}');">{{_("取消关注")}}</a></p>
                 {% else %}
-                    <p><a href="{{ url_for('main.follow', username=user.username) }}">{{_("点击关注")}}</a></p>
+                    <p><a href="javascript:follow('{{user.username}}');">{{_("点击关注")}}</a></p>
                 {% endif %}
+
             </td>
         </tr>
     </table>

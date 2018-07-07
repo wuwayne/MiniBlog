@@ -111,9 +111,10 @@ def edit_profile():
 	return render_template('edit_profile.html', title='个人主页',form=form)
 
 
-@bp.route('/follow/<username>')
+@bp.route('/follow',methods=['POST'])
 @login_required
-def follow(username):
+def follow():
+	username = request.form['user']
 	user = User.query.filter_by(username=username).first()
 	# if user == current_user:
 	# 	flash("不能关注自己！")
@@ -121,12 +122,16 @@ def follow(username):
 	current_user.follow(user)
 	db.session.commit()
 	flash(_("已成功关注%(username)s!",username=username))
-	return redirect(url_for('main.user',username=username))
+	# return redirect(url_for('main.user',username=username))
+	return jsonify({'state':_("已成功关注%(username)s!",username=username),
+					'follower_num':user.followers.count()
+		})
 
 
-@bp.route('/unfollow/<username>')
+@bp.route('/unfollow',methods=['POST'])
 @login_required
-def unfollow(username):
+def unfollow():
+	username = request.form['user']
 	user = User.query.filter_by(username=username).first()
 	# if user == current_user:
 	# 	flash("不能关注自己！")
@@ -134,8 +139,10 @@ def unfollow(username):
 	current_user.unfollow(user)
 	db.session.commit()
 	flash(_("已取消关注%(username)s!",username=username))
-	return redirect(url_for('main.user',username=username))
-
+	# return redirect(url_for('main.user',username=username))
+	return jsonify({'state':_("已取消关注%(username)s!",username=username),
+					"follower_num":user.followers.count()
+		})
 
 @bp.route('/explore')
 @login_required
