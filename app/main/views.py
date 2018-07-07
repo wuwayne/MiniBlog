@@ -43,7 +43,6 @@ def index():
 @login_required
 def user(username):
 	user = User.query.filter_by(username=username).first_or_404()
-
 	page = request.args.get('page',1,type=int)
 	posts = user.posts.order_by(Post.timestamp.desc()).paginate(
 		page,current_app.config['POSTS_PER_PAGE'],False)
@@ -54,6 +53,33 @@ def user(username):
 	return render_template('user.html',user=user,posts=posts.items,next_url=next_url, prev_url=prev_url)
 
 
+@bp.route('/follower_list/<username>')
+@login_required
+def follower_list(username):
+	user = User.query.filter_by(username=username).first_or_404()	
+	page = request.args.get('page',1,type=int)
+	followers = user.followers.paginate(
+		page,current_app.config['FOLLOWEDS_AND_FOLLWERS_PER_PAGE'],False)
+
+	next_url = url_for('main.follower_list',username=username,page=followers.next_num) if followers.has_next else None
+	prev_url = url_for('main.follower_list',username=username,page=followers.prev_num) if followers.has_prev else None
+
+	return render_template('user.html',user=user,followers=followers.items,next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/followed_list/<username>')
+@login_required
+def followed_list(username):
+	user = User.query.filter_by(username=username).first_or_404()	
+	page = request.args.get('page',1,type=int)
+	followeds = user.followed.paginate(
+		page,current_app.config['FOLLOWEDS_AND_FOLLWERS_PER_PAGE'],False)
+
+	next_url = url_for('main.followed_list',username=username,page=followeds.next_num) if followeds.has_next else None
+	prev_url = url_for('main.followed_list',username=username,page=followeds.prev_num) if followeds.has_prev else None
+
+	return render_template('user.html',user=user,followeds=followeds.items,next_url=next_url, prev_url=prev_url)
+
 
 @bp.before_app_request
 def before_request():
@@ -63,6 +89,7 @@ def before_request():
 	g.locale = str(get_locale())
 	# if g.locale == 'zh':
 	# 	g.locale = 'zh_CN'
+
 
 @bp.route('/edit_profile',methods=['GET', 'POST'])
 @login_required

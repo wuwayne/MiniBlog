@@ -8,7 +8,12 @@
             	<h1>{{ user.username }}</h1>
             	{% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
                 {% if user.last_seen %}<p>{{_("上一次访问")}}: {{ moment(user.last_seen).format('LLL') }}</p>{% endif %}
-                <p>{{_("粉丝")}}：{{ user.followers.count() }} | {{_("关注")}}：{{ user.followed.count() }} </p>
+                <p>{{_("粉丝")}}：
+                    <a href="{{ url_for('main.follower_list',username=user.username) }}">{{ user.followers.count() }}</a> 
+                    |
+                    {{_("关注")}}：
+                    <a href="{{ url_for('main.followed_list',username=user.username) }}">{{ user.followed.count() }} </a>
+                </p>
                 {% if user == current_user %}
                     <p><a href="{{ url_for('main.edit_profile') }}">{{_("编辑")}}</a></p>
                 {% elif current_user.is_following(user) %}
@@ -19,8 +24,18 @@
             </td>
         </tr>
     </table>
-	{% for post in posts %}
-		{% include "_post.html" %}
-	{% endfor %}
+    {% if posts %}
+    	{% for post in posts %}
+    		{% include "_post.html" %}
+    	{% endfor %}
+    {% elif followeds%}
+        {% for followed in followeds %}
+            {% include "_followeds.html" %}
+        {% endfor %}
+    {% else %}
+        {% for follower in followers %}
+            {% include "_followers.html" %}
+        {% endfor %}
+    {% endif %}
     {% include "_pagination.html" %}
 {% endblock %}

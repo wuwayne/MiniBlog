@@ -15,6 +15,11 @@ followers = db.Table('followers',
 	db.Column('followed_id',db.Integer,db.ForeignKey('user.id'))
 )
 
+thumb_ups = db.Table('thumb_ups',
+	db.Column('thumbers_id',db.Integer,db.ForeignKey('user.id')),
+	db.Column('thumbed_id',db.Integer,db.ForeignKey('post.id'))
+)
+
 class User(UserMixin,db.Model):
 	__tablename__ = 'user'
 	id = db.Column(db.Integer,primary_key=True)
@@ -40,7 +45,26 @@ class User(UserMixin,db.Model):
 		digest = md5(self.email.lower().encode('utf-8')).hexdigest()
 		return r'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest,size)
 
-	followed = db.relationship("User",secondary=followers,
+
+	thumbed = db.relationship('Post',secondary=thumb_ups,
+		primaryjoin=(thumb_ups.c.thumbers_id == id),
+		secondaryjoin=(thumb_ups.c.thumbed_id == id),
+		backref=db.backref('thumbers',lazy='dynamic'),lazy='dynamic'
+		)
+
+	def thumb(self,post):
+		if not is_thumbing(post):
+			self.thumbed.append(post)
+
+	def unthumb(self,post):
+		if self.is_thumbing(post):
+			self.thumbed.remove(post)
+
+	def is_thumbing(self,post):
+		return self.thumbed.filter(thumb_ups.c.thumbed_id == post.id).count()>0
+
+
+	followed = db.relationship('User',secondary=followers,
 		primaryjoin=(followers.c.follower_id == id),
 		secondaryjoin=(followers.c.followed_id == id),
 		backref=db.backref('followers',lazy='dynamic'),lazy='dynamic'
@@ -83,11 +107,12 @@ def load_user(id):
 	return User.query.get(int(id))
 
 class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    language = db.Column(db.String(5))
+	__tablename__ = 'post'
+	id = db.Column(db.Integer, primary_key=True)
+	body = db.Column(db.String(140))
+	timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+	language = db.Column(db.String(5))
 
-    def __repr__(self):
-        return '<Post {}>'.format(self.body)
+	def __repr__(self):
+		return '<Post {}>'.format(self.body)

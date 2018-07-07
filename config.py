@@ -6,7 +6,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
 
 class Config(object):
-	SECRET_KEY = os.environ.get('SECRET_KEY')
+	SECRET_KEY = os.environ.get('SECRET_KEY') or r'21ed213red23r'
 	SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
 		'sqlite:///' + os.path.join(basedir,'app.db')
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -21,7 +21,8 @@ class Config(object):
 
 	MS_TRANSLATOR_KEY = os.environ.get('MS_TRANSLATOR_KEY')
 
-	POSTS_PER_PAGE = 15
+	POSTS_PER_PAGE = 20
+	FOLLOWEDS_AND_FOLLWERS_PER_PAGE = 20
 
 	LANGUAGES = ['en','zh']
 
