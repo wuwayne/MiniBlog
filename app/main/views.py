@@ -121,10 +121,12 @@ def follow():
 	# 	return redirect(url_for('main.user',username=username))
 	current_user.follow(user)
 	db.session.commit()
-	flash(_("已成功关注%(username)s!",username=username))
+	# flash(_("已成功关注%(username)s!",username=username))
 	# return redirect(url_for('main.user',username=username))
 	return jsonify({'state':_("已成功关注%(username)s!",username=username),
-					'follower_num':user.followers.count()
+					'follower_num':user.followers.count(),
+					'new_href':'javascript:unfollow'+'('+str(username)+')',
+					'text':_("取消关注")
 		})
 
 
@@ -138,10 +140,12 @@ def unfollow():
 	# 	return redirect(url_for('user',username=username))
 	current_user.unfollow(user)
 	db.session.commit()
-	flash(_("已取消关注%(username)s!",username=username))
+	# flash(_("已取消关注%(username)s!",username=username))
 	# return redirect(url_for('main.user',username=username))
 	return jsonify({'state':_("已取消关注%(username)s!",username=username),
-					"follower_num":user.followers.count()
+					"follower_num":user.followers.count(),
+					"new_href":'javascript:follow'+'('+str(username)+')',
+					'text':_("点击关注")
 		})
 
 @bp.route('/explore')
