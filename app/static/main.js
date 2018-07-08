@@ -4,7 +4,8 @@ function follow(username) {
     }).done(function(response){
         $('#follower_num').text(response['follower_num'])
         $('#state_alert').show().text(response['state'])
-        $('.follow_click a').text(response['text']).attr('href',response['new_href'])
+        $('.follow_click').hide()
+        $('.unfollow_click').show()
     });
 };
 
@@ -14,7 +15,9 @@ function unfollow(username) {
     }).done(function(response){
         $('#follower_num').text(response['follower_num'])
         $('#state_alert').show().text(response['state'])
-        $('.follow_click a').text(response['text']).attr('href',response['new_href'])
+        $('.unfollow_click').hide()
+        $('.follow_click').show()
+
     });
 };
 
