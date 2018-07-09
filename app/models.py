@@ -47,13 +47,11 @@ class User(UserMixin,db.Model):
 
 
 	thumbed = db.relationship('Post',secondary=thumb_ups,
-		primaryjoin=(thumb_ups.c.thumbers_id == id),
-		secondaryjoin=(thumb_ups.c.thumbed_id == id),
-		backref=db.backref('thumbers',lazy='dynamic'),lazy='dynamic'
+		backref=db.backref('thumbers',lazy='dynamic')
 		)
 
 	def thumb(self,post):
-		if not is_thumbing(post):
+		if not self.is_thumbing(post):
 			self.thumbed.append(post)
 
 	def unthumb(self,post):
@@ -61,8 +59,11 @@ class User(UserMixin,db.Model):
 			self.thumbed.remove(post)
 
 	def is_thumbing(self,post):
-		return self.thumbed.filter(thumb_ups.c.thumbed_id == post.id).count()>0
-
+		for u in post.thumbers.all():
+			if int(self.id) == int(u.id):
+			 	return True
+			else:
+				return False
 
 	followed = db.relationship('User',secondary=followers,
 		primaryjoin=(followers.c.follower_id == id),

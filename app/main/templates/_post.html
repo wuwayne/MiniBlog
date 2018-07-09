@@ -26,4 +26,24 @@
         </td>
     </tr>
 </table>
+{% if current_user.is_thumbing(post) %}
+<div id="before_zan{{post.id}}" style="display: none;"><a href="javascript:before_zan('{{post.id}}');"><img style="width: 50px;" src="{{url_for('static',filename='before_zan.png')}}" /></a>
+    <span>{{ post.thumbers.count() }}</span>
+</div>
+
+<div id="after_zan{{post.id}}" ><a href="javascript:after_zan('{{post.id}}');"><img style="width: 50px" src="{{url_for('static',filename='after_zan.png')}}" /></a>
+    <span>{{ post.thumbers.count() }}</span>
+</div>
+
+{% else %}
+<div id="before_zan{{post.id}}"><a href="javascript:before_zan('{{post.id}}');"><img style="width: 50px;" src="{{url_for('static',filename='before_zan.png')}}" /></a>
+    <span>{{ post.thumbers.count() }}</span>
+</div>
+
+<div id="after_zan{{post.id}}" style="display: none;"><a href="javascript:after_zan('{{post.id}}');"><img style="width: 50px;" src="{{url_for('static',filename='after_zan.png')}}" /></a>
+    <span>{{ post.thumbers.count() }}</span>
+</div>
+
+{% endif %}
+
     

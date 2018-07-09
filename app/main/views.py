@@ -144,6 +144,32 @@ def unfollow():
 					"follower_num":user.followers.count(),
 		})
 
+
+@bp.route('/thumb_up',methods=['POST'])
+@login_required
+def thumb_up():
+	id = request.form['post_id']
+	post = Post.query.filter_by(id=id).first()
+	current_user.thumb(post)
+	db.session.commit()
+
+	return jsonify({
+				'thumbers_num':post.thumbers.count()
+		})
+
+
+@bp.route('/thumb_down',methods=['POST'])
+@login_required
+def thumb_down():
+	id = request.form['post_id']
+	post = Post.query.filter_by(id=id).first()
+	current_user.unthumb(post)
+	db.session.commit()
+	
+	return jsonify({
+				'thumbers_num':post.thumbers.count()
+		})
+
 @bp.route('/explore')
 @login_required
 def explore():

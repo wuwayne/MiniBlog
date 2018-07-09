@@ -33,3 +33,26 @@ function translate(sourceElem,destElem,sourceLang,destLang) {
         $(destElem).text("{{ _('Error: Could not contact server.') }}");
     });
 };
+
+function before_zan(id) {
+    $.post('/thumb_up',{
+        post_id:id
+    }).done(function (response) {
+        $('#before_zan'+id).hide()
+        $('#after_zan'+id).show()
+        $('#after_zan'+id+ ' span').text(response['thumbers_num'])
+    }).fail(function (response,status) {
+        alert(status)
+    })
+}
+
+function after_zan(id) {
+    $.post('/thumb_down',{
+        post_id:id
+    }).done(function (response) {
+        $('#after_zan'+id).hide()
+        $('#before_zan'+id).show()
+        $('#before_zan'+'id'+ ' span').text(response['thumbers_num'])
+        
+    })
+}
