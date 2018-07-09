@@ -52,7 +52,7 @@ function after_zan(id) {
     }).done(function (response) {
         $('#after_zan'+id).hide()
         $('#before_zan'+id).show()
-        $('#before_zan'+'id'+ ' span').text(response['thumbers_num'])
+        $('#before_zan'+id+ ' span').text(response['thumbers_num'])
         
     })
 }
