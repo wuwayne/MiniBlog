@@ -41,8 +41,7 @@ function before_zan(id) {
         $('#before_zan'+id).hide()
         $('#after_zan'+id).show()
         $('#after_zan'+id+ ' span').text(response['thumbers_num'])
-    }).fail(function (response,status) {
-        alert(status)
+        $('#thumbed_num').text(response['thumbed_num'])
     })
 }
 
@@ -53,6 +52,6 @@ function after_zan(id) {
         $('#after_zan'+id).hide()
         $('#before_zan'+id).show()
         $('#before_zan'+id+ ' span').text(response['thumbers_num'])
-        
+        $('#thumbed_num').text(response['thumbed_num'])
     })
 }

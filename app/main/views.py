@@ -167,7 +167,8 @@ def thumb_up():
 	db.session.commit()
 
 	return jsonify({
-				'thumbers_num':post.thumbers.count()
+				'thumbers_num':post.thumbers.count(),
+				'thumbed_num':current_user.thumbed.count()
 		})
 
 
@@ -180,7 +181,8 @@ def thumb_down():
 	db.session.commit()
 	
 	return jsonify({
-				'thumbers_num':post.thumbers.count()
+				'thumbers_num':post.thumbers.count(),
+				'thumbed_num':current_user.thumbed.count()
 		})
 
 @bp.route('/explore')

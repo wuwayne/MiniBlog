@@ -59,11 +59,12 @@ class User(UserMixin,db.Model):
 			self.thumbed.remove(post)
 
 	def is_thumbing(self,post):
-		for u in post.thumbers.all():
-			if int(self.id) == int(u.id):
-			 	return True
-			else:
-				return False
+		# for u in post.thumbers.all():
+		# 	if int(self.id) == int(u.id):
+		# 	 	return True
+		# 	else:
+		# 		return False
+		return self.thumbed.filter(thumb_ups.c.thumbed_id == post.id).count()>0
 
 	followed = db.relationship('User',secondary=followers,
 		primaryjoin=(followers.c.follower_id == id),
