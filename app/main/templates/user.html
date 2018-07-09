@@ -15,6 +15,7 @@
                     
                     <a id="followed_num" href="{{ url_for('main.followed_list',username=user.username) }}">{{_("关注")}}：{{ user.followed.count() }} </a>
                 </p>
+                <p><a href="{{ url_for('main.thumbup_list',username=user.username) }}">{{_("我的赞")}}</a></p>
                 {% if user == current_user %}
                     <p><a href="{{ url_for('main.edit_profile') }}">{{_("编辑")}}</a></p>
                 {% elif current_user.is_following(user) %}

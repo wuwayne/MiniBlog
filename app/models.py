@@ -47,7 +47,7 @@ class User(UserMixin,db.Model):
 
 
 	thumbed = db.relationship('Post',secondary=thumb_ups,
-		backref=db.backref('thumbers',lazy='dynamic')
+		backref=db.backref('thumbers',lazy='dynamic'),lazy='dynamic'
 		)
 
 	def thumb(self,post):

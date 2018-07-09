@@ -53,6 +53,19 @@ def user(username):
 	return render_template('user.html',user=user,posts=posts.items,next_url=next_url, prev_url=prev_url)
 
 
+@bp.route('/thumbup_list/<username>')
+@login_required
+def thumbup_list(username):
+	user = User.query.filter_by(username=username).first_or_404()	
+	page = request.args.get('page',1,type=int)
+	thumbeds = user.thumbed.paginate(
+		page,current_app.config['FOLLOWEDS_AND_FOLLWERS_PER_PAGE'],False)	
+
+	next_url = url_for('main.thumbup_list',username=username,page=thumbeds.next_num) if thumbeds.has_next else None
+	prev_url = url_for('main.thumbup_list',username=username,page=thumbeds.prev_num) if thumbeds.has_prev else None
+
+	return render_template('user.html',user=user,posts=thumbeds.items,next_url=next_url, prev_url=prev_url)
+
 @bp.route('/follower_list/<username>')
 @login_required
 def follower_list(username):
