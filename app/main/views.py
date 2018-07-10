@@ -13,6 +13,7 @@ from .forms import EditProfileForm,PostForm
 from app.models import User,Post
 from app.translate import translate
 from app.main import bp
+from app.social.forms import CommentForm
 
 @bp.route('/',methods=['GET', 'POST'])
 @bp.route('/index',methods=['GET', 'POST'])
@@ -99,6 +100,7 @@ def before_request():
 	if current_user.is_authenticated:
 		current_user.last_seen = datetime.utcnow()
 		db.session.commit()
+		g.comment_form = CommentForm()
 	g.locale = str(get_locale())
 	# if g.locale == 'zh':
 	# 	g.locale = 'zh_CN'

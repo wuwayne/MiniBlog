@@ -43,7 +43,7 @@ function before_zan(id) {
         $('#after_zan'+id+ ' span').text(response['thumbers_num'])
         $('#thumbed_num').text(response['thumbed_num'])
     })
-}
+};
 
 function after_zan(id) {
     $.post('/thumb_down',{
@@ -54,4 +54,9 @@ function after_zan(id) {
         $('#before_zan'+id+ ' span').text(response['thumbers_num'])
         $('#thumbed_num').text(response['thumbed_num'])
     })
-}
+};
+
+function show_comment(id) {
+    $('#comment'+id).show()
+};
+
