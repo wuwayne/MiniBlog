@@ -57,6 +57,6 @@ function after_zan(id) {
 };
 
 function show_comment(id) {
-    $('#comment'+id).show()
+    $('#comment'+id).toggle()
 };
 

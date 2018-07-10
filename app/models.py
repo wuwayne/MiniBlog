@@ -130,4 +130,4 @@ class Comment(db.Model):
 	timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 	language = db.Column(db.String(5))
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-	pos_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+	post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
