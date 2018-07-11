@@ -6,8 +6,8 @@ from app import db
 from app.social import bp
 from app.models import User,Post,Comment
 
-@bp.route('/comment',methods=['POST'])
-def comment():
+@bp.route('/post_comment',methods=['POST'])
+def post_comment():
 	form = g.comment_form
 	post_id = request.form['id']
 	body = request.form['comment']
@@ -22,3 +22,8 @@ def comment():
 	return jsonify({
 					'comment_num':post.comments.count(),
 		})
+
+
+@bp.route('/get_comment',methods=['POST'])
+def get_comment():
+	pass

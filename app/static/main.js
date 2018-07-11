@@ -56,15 +56,25 @@ function after_zan(id) {
     })
 };
 
-function show_comment(id) {
-    $('#commentForm'+id).toggle()
-};
+// function get_comment(id) {
+//     $.post('/get_comment',{
+//         id:id
+//     }).done(function (response) {
+//         $('#commentForm'+id).toggle()
+//     })
+// };
+
+function get_comment(id) {
+    $('#commentForm'+id).toggle();
+    $('#commentList'+id).toggle();
+}
 
 function post_comment(id) {
-    $.post('/comment',{
+    $.post('/post_comment',{
         id:id,
-        comment:$("#comment").val()
+        comment:$("#commentData"+id+' '+"textarea").val()
     }).done(function (response) {
+        $("#commentData"+id+' '+"textarea").val("");
         $('#comment'+id+ ' span').text(response['comment_num'])
     })  
 };

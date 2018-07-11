@@ -3,10 +3,26 @@
 {% if g.comment_form %}
 <div id="commentForm{{post.id}}" class="row" style="display: none;">
     <div class="col-md-4">
-    	<form action="javascript:post_comment({{post.id}})" method="post">
+    	<form id="commentData{{post.id}}" action="javascript:post_comment({{post.id}})" method="post">
         {{ wtf.quick_form(g.comment_form) }}
         </form>
+        <hr>
     </div>
 </div>
 {% endif %}
+{% if post.comments.count() > 0 %}
+<div id="commentList{{post.id}}" style="display: none;">
+{% for comment in post.comments.all() %}
+<a href="{{ url_for('main.user', username=comment.author.username) }}">
+    {{ comment.author.username }}
+</a>
+（{{ moment(post.timestamp).fromNow() }}）{{_('说')}}:
+<span>{{ comment.body }}</span>
+<br>
+<hr>
+{% endfor %}
+</div>
+{% endif %}
+
+
 
