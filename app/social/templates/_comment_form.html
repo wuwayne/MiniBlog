@@ -1,10 +1,10 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% if g.comment_form %}
-<div id="comment{{post.id}}" class="row" style="display: none;">
+<div id="commentForm{{post.id}}" class="row" style="display: none;">
     <div class="col-md-4">
-    	<form action="{{url_for('comment')}}" method="post">
-        <!-- {{ wtf.quick_form(g.comment_form) }} -->
+    	<form action="javascript:post_comment({{post.id}})" method="post">
+        {{ wtf.quick_form(g.comment_form) }}
         </form>
     </div>
 </div>

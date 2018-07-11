@@ -1,15 +1,24 @@
-from app.models import User,Post
+from flask import g,request,jsonify
 from guess_language import guess_language
+from flask_login import current_user
 
+from app import db
 from app.social import bp
+from app.models import User,Post,Comment
 
 @bp.route('/comment',methods=['POST'])
-def comment(post_id):
+def comment():
 	form = g.comment_form
-	if form.validate_on_submit():
-		language = guess_language(form.post.data)
-		if language == 'UNKNOWN' or len(language) > 5:
-			language = ''
-		comment = Comment(body=form.post.data,language=language,post_id=int(post_id),user_id=current_user.id)
-		db.session.add(comment)
-		db.session.commit()
+	post_id = request.form['id']
+	body = request.form['comment']
+	post = Post.query.filter_by(id=post_id).first()
+	language = guess_language(body)
+	if language == 'UNKNOWN' or len(language) > 5:
+		language = ''
+	comment = Comment(body=body,language=language,post_id=int(post_id),user_id=current_user.id)
+	db.session.add(comment)
+	db.session.commit()
+
+	return jsonify({
+					'comment_num':post.comments.count(),
+		})

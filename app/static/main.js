@@ -57,6 +57,15 @@ function after_zan(id) {
 };
 
 function show_comment(id) {
-    $('#comment'+id).toggle()
+    $('#commentForm'+id).toggle()
+};
+
+function post_comment(id) {
+    $.post('/comment',{
+        id:id,
+        comment:$("#comment").val()
+    }).done(function (response) {
+        $('#comment'+id+ ' span').text(response['comment_num'])
+    })  
 };
 

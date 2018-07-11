@@ -1,13 +1,9 @@
 <!-- 评论 -->
-<div id="comment{{post.id}}">
-	<a href="javascript:show_comment('{{post.id}}');"><img src="{{url_for('static',filename='pl.png')}}" />
+<div>
+	<a href="javascript:show_comment('{{post.id}}');"><img src="{{url_for('static',filename='pl.png')}}" /></a>
     <span>{{ post.comments.count() }}</span>
-    </a>
 </div>
 {% include "_comment_form.html" %}
-{% if post.comments.count() > 0 %}
-<p>这里是评论</p>
-{% endif%}
 
 
 
