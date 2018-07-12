@@ -12,15 +12,17 @@
 {% endif %}
 {% if post.comments.count() > 0 %}
 <div id="commentList{{post.id}}" style="display: none;">
-{% for comment in post.comments.all() %}
+{% with comments = post.comments.all()[::-1] %}
+{% for comment in comments %}
 <a href="{{ url_for('main.user', username=comment.author.username) }}">
     {{ comment.author.username }}
 </a>
-（{{ moment(post.timestamp).fromNow() }}）{{_('说')}}:
+（{{ moment(comment.timestamp).fromNow() }}）{{_('说')}}:
 <span>{{ comment.body }}</span>
 <br>
 <hr>
 {% endfor %}
+{% endwith %}
 </div>
 {% endif %}
 
