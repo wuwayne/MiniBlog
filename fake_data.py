@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 import os
 import random
 
-from app.models import User,Post
+from app.models import User,Post,Comment
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -48,10 +48,28 @@ def add_post(n,locale='zh_CN'):
 	try:
 		session.commit()
 	except Exception as e:
-		raise e
+		pass
 	session.close()	
+
+def add_comment(n,locale='zh_CN'):
+	session = create_session()
+	fake = Faker(locale)
+
+	user_num = session.query(User.id).count()
+	post_num = session.query(Post.id).count()
+
+	for _ in range(n):
+		comment = Comment(user_id=random.randint(1,user_num),post_id=random.randint(1,post_num),body=fake.text())
+		session.add(comment)
+
+	try:
+		session.commit()
+	except Exception as e:
+		pass
+	session.close()
 
 
 if __name__ == '__main__':
 	# add_user(100)
-	add_post(100)
+	# add_post(1000)
+	add_comment(10000)
