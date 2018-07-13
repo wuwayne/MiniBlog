@@ -34,6 +34,26 @@ function translate(sourceElem,destElem,sourceLang,destLang) {
     });
 };
 
+function before_star(id) {
+    $.post('/star',{
+        post_id:id
+    }).done(function (response) {
+        $('#before_star'+id).hide()
+        $('#after_star'+id).show()
+        $('#after_star'+id+ ' span').text(response['stared_num'])
+    })
+};
+
+function after_star(id) {
+    $.post('/unstar',{
+        post_id:id
+    }).done(function (response) {
+        $('#before_star'+id).hide()
+        $('#after_star'+id).show()
+        $('#after_star'+id+ ' span').text(response['stared_num'])
+    })
+};
+
 function before_zan(id) {
     $.post('/thumb_up',{
         post_id:id

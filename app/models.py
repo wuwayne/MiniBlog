@@ -20,6 +20,11 @@ thumb_ups = db.Table('thumb_ups',
 	db.Column('thumbed_id',db.Integer,db.ForeignKey('post.id'))
 )
 
+stars = db.Table('stars',
+	db.Column('starers_id',db.Integer,db.ForeignKey('user.id')),
+	db.Column('stared_id',db.Integer,db.ForeignKey('post.id'))
+)
+
 class User(UserMixin,db.Model):
 	__tablename__ = 'user'
 	id = db.Column(db.Integer,primary_key=True)
@@ -47,6 +52,21 @@ class User(UserMixin,db.Model):
 		digest = md5(self.email.lower().encode('utf-8')).hexdigest()
 		return r'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest,size)
 
+	stared = db.relationship('Post',secondary=stars,
+		backref=db.backref('starers',lazy='dynamic'),lazy='dynamic'
+		)
+
+	def star(self,post):
+		if not self.is_staring(post):
+			self.stared.append(post)
+
+	def unstar(self,post):
+		if self.is_staring(post):
+			self.stared.remove(post)
+
+	def is_staring(self,post):
+		return self.stared.filter(stars.c.stared_id == post.id).count()>0
+
 
 	thumbed = db.relationship('Post',secondary=thumb_ups,
 		backref=db.backref('thumbers',lazy='dynamic'),lazy='dynamic'
@@ -61,11 +81,6 @@ class User(UserMixin,db.Model):
 			self.thumbed.remove(post)
 
 	def is_thumbing(self,post):
-		# for u in post.thumbers.all():
-		# 	if int(self.id) == int(u.id):
-		# 	 	return True
-		# 	else:
-		# 		return False
 		return self.thumbed.filter(thumb_ups.c.thumbed_id == post.id).count()>0
 
 	followed = db.relationship('User',secondary=followers,
