@@ -40,7 +40,7 @@ function before_star(id) {
     }).done(function (response) {
         $('#before_star'+id).hide()
         $('#after_star'+id).show()
-        $('#after_star'+id+ ' span').text(response['stared_num'])
+        $('#stared_num').text(response['stared_num'])
     })
 };
 
@@ -48,9 +48,9 @@ function after_star(id) {
     $.post('/unstar',{
         post_id:id
     }).done(function (response) {
-        $('#before_star'+id).hide()
-        $('#after_star'+id).show()
-        $('#after_star'+id+ ' span').text(response['stared_num'])
+        $('#after_star'+id).hide()
+        $('#before_star'+id).show()
+        $('#stared_num').text(response['stared_num'])
     })
 };
 

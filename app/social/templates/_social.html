@@ -1,23 +1,23 @@
 <!-- 收藏 -->
 {% if current_user.is_staring(post) %}
-<div id="scq{{post.id}}" style="display: none;"><a href="javascript:before_star('{{post.id}}');"><img src="{{url_for('static',filename='scq.png')}}" /></a>
+<div id="before_star{{post.id}}" style="display: none;"><a href="javascript:before_star('{{post.id}}');"><img src="{{url_for('static',filename='scq.png')}}" /></a>
 </div>
 
-<div id="sch{{post.id}}" ><a href="javascript:after_star('{{post.id}}');"><img src="{{url_for('static',filename='sch.png')}}" /></a>
+<div id="after_star{{post.id}}" ><a href="javascript:after_star('{{post.id}}');"><img src="{{url_for('static',filename='sch.png')}}" /></a>
 </div>
 
 {% else %}
-<div id="scq{{post.id}}"><a href="javascript:before_star('{{post.id}}');"><img src="{{url_for('static',filename='scq.png')}}" /></a>
+<div id="before_star{{post.id}}"><a href="javascript:before_star('{{post.id}}');"><img src="{{url_for('static',filename='scq.png')}}" /></a>
 </div>
 
-<div id="sch{{post.id}}" style="display: none;"><a href="javascript:after_star('{{post.id}}');"><img src="{{url_for('static',filename='sch.png')}}" /></a>
+<div id="after_star{{post.id}}" style="display: none;"><a href="javascript:after_star('{{post.id}}');"><img src="{{url_for('static',filename='sch.png')}}" /></a>
 </div>
 
 {% endif %}
 
 <!-- 评论 -->
 <div>
-	<a href="javascript:show_comment('{{post.id}}');"><img src="{{url_for('static',filename='pl.png')}}" /></a>
+	<a href="javascript:get_comment('{{post.id}}');"><img src="{{url_for('static',filename='pl.png')}}" /></a>
     <span>{{ post.comments.count() }}</span>
 </div>
 {% include "_comment_form.html" %}
