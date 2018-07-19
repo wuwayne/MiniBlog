@@ -67,6 +67,21 @@ def thumbup_list(username):
 
 	return render_template('user.html',user=user,posts=thumbeds.items,next_url=next_url, prev_url=prev_url)
 
+
+@bp.route('/star_list/<username>')
+@login_required
+def star_list(username):
+	user = User.query.filter_by(username=username).first_or_404()	
+	page = request.args.get('page',1,type=int)
+	stareds = user.stared.paginate(
+		page,current_app.config['FOLLOWEDS_AND_FOLLWERS_PER_PAGE'],False)	
+
+	next_url = url_for('main.star_list',username=username,page=stareds.next_num) if stareds.has_next else None
+	prev_url = url_for('main.star_list',username=username,page=stareds.prev_num) if stareds.has_prev else None
+
+	return render_template('user.html',user=user,posts=stareds.items,next_url=next_url, prev_url=prev_url)
+
+
 @bp.route('/follower_list/<username>')
 @login_required
 def follower_list(username):
@@ -186,6 +201,36 @@ def thumb_down():
 				'thumbers_num':post.thumbers.count(),
 				'thumbed_num':current_user.thumbed.count()
 		})
+
+
+@bp.route('/star',methods=['POST'])
+@login_required
+def star():
+	id = request.form['post_id']
+	post = Post.query.filter_by(id=id).first()
+	current_user.star(post)
+	db.session.commit()
+
+	return jsonify({
+
+				'stared_num':current_user.stared.count()
+		})
+
+
+@bp.route('/unstar',methods=['POST'])
+@login_required
+def unstar():
+	id = request.form['post_id']
+	post = Post.query.filter_by(id=id).first()
+	current_user.unstar(post)
+	db.session.commit()
+
+	return jsonify({
+
+				'stared_num':current_user.stared.count()
+		})
+
+
 
 @bp.route('/explore')
 @login_required
