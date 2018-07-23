@@ -1,6 +1,6 @@
 {% extends 'bootstrap/base.html' %}
 
-{% block title %}{# block #}
+{% block title %}
     {% if title%}
         {{ title }}
     {% else %}
@@ -8,8 +8,8 @@
     {% endif %}
 {% endblock %}
 
-{% block navbar %}{# block #}
-    <nav class="navbar navbar-default">
+{% block navbar %}
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -38,7 +38,7 @@
     </nav>
 {% endblock %}
 
-{% block content %}{# block #}
+{% block content %}
     <div class="container">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -60,4 +60,10 @@
     {{ moment.lang(g.locale) }}
     {% endif%}
     <script type="text/javascript" src="{{ url_for('static',filename='main.js') }}"></script>
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('static', filename='main.css')}}">
 {% endblock %}
