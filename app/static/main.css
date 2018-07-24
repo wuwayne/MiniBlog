@@ -1,3 +1,7 @@
 body {
     padding-top: 52px; 
 }
+
+.alert-info {
+	margin-top: 20px;
+}
