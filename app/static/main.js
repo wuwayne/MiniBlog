@@ -84,7 +84,7 @@ function after_zan(id) {
 //     })
 // };
 
-function get_comment(id) {
+function toggle_comment(id) {
     $('#commentForm'+id).toggle();
     $('#commentList'+id).toggle();
 }

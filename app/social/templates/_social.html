@@ -1,46 +1,51 @@
 <!-- 收藏 -->
-{% if current_user.is_staring(post) %}
-<div id="before_star{{post.id}}" style="display: none;"><a href="javascript:before_star('{{post.id}}');"><img src="{{url_for('static',filename='scq.png')}}" /></a>
-</div>
 
-<div id="after_star{{post.id}}" ><a href="javascript:after_star('{{post.id}}');"><img src="{{url_for('static',filename='sch.png')}}" /></a>
-</div>
+
+{% if current_user.is_staring(post) %}
+	<ul class="list-inline text-center">
+<li id="before_star{{post.id}}" style="display: none;"><a href="javascript:before_star('{{post.id}}');"><img src="{{url_for('static',filename='scq.png')}}" />{{_("收藏")}}</a>
+</li>
+
+<li id="after_star{{post.id}}" ><a href="javascript:after_star('{{post.id}}');"><img src="{{url_for('static',filename='sch.png')}}" />{{_("收藏")}}</a>
+</li>
 
 {% else %}
-<div id="before_star{{post.id}}"><a href="javascript:before_star('{{post.id}}');"><img src="{{url_for('static',filename='scq.png')}}" /></a>
-</div>
+	<ul class="list-inline text-center">
+<li id="before_star{{post.id}}"><a href="javascript:before_star('{{post.id}}');"><img src="{{url_for('static',filename='scq.png')}}" />{{_("收藏")}}</a>
+</li>
 
-<div id="after_star{{post.id}}" style="display: none;"><a href="javascript:after_star('{{post.id}}');"><img src="{{url_for('static',filename='sch.png')}}" /></a>
-</div>
+<li id="after_star{{post.id}}" style="display: none;"><a href="javascript:after_star('{{post.id}}');"><img src="{{url_for('static',filename='sch.png')}}" />{{_("收藏")}}</a>
+</li>
 
 {% endif %}
 
 <!-- 评论 -->
-<div>
-	<a href="javascript:get_comment('{{post.id}}');"><img src="{{url_for('static',filename='pl.png')}}" /></a>
-    <span>{{ post.comments.count() }}</span>
-</div>
-{% include "_comment_form.html" %}
 
+<li>
+	<a href="javascript:toggle_comment('{{post.id}}');"><img src="{{url_for('static',filename='pl.png')}}" />
+    {{_("评论")}}(<span>{{ post.comments.count() }}</span>)</a>
+</li>
 
 
 <!-- 点赞 -->
 {% if current_user.is_thumbing(post) %}
-<div id="before_zan{{post.id}}" style="display: none;"><a href="javascript:before_zan('{{post.id}}');"><img src="{{url_for('static',filename='before_zan.png')}}" /></a>
-    <span>{{ post.thumbers.count() }}</span>
-</div>
 
-<div id="after_zan{{post.id}}" ><a href="javascript:after_zan('{{post.id}}');"><img src="{{url_for('static',filename='after_zan.png')}}" /></a>
-    <span>{{ post.thumbers.count() }}</span>
-</div>
+<li id="before_zan{{post.id}}" style="display: none;"><a href="javascript:before_zan('{{post.id}}');"><img src="{{url_for('static',filename='before_zan.png')}}" />{{_("点赞")}}
+    (<span>{{ post.thumbers.count() }}</span>)</a>
+</li>
 
+<li id="after_zan{{post.id}}" ><a href="javascript:after_zan('{{post.id}}');"><img src="{{url_for('static',filename='after_zan.png')}}" />{{_("点赞")}}
+    (<span>{{ post.thumbers.count() }}</span>)</a>
+</li>
+</ul>
 {% else %}
-<div id="before_zan{{post.id}}"><a href="javascript:before_zan('{{post.id}}');"><img src="{{url_for('static',filename='before_zan.png')}}" /></a>
-    <span>{{ post.thumbers.count() }}</span>
-</div>
+<li id="before_zan{{post.id}}"><a href="javascript:before_zan('{{post.id}}');"><img src="{{url_for('static',filename='before_zan.png')}}" />{{_("点赞")}}
+    (<span>{{ post.thumbers.count() }}</span>)</a>
+</li>
 
-<div id="after_zan{{post.id}}" style="display: none;"><a href="javascript:after_zan('{{post.id}}');"><img src="{{url_for('static',filename='after_zan.png')}}" /></a>
-    <span>{{ post.thumbers.count() }}</span>
-</div>
-
+<li id="after_zan{{post.id}}" style="display: none;"><a href="javascript:after_zan('{{post.id}}');"><img src="{{url_for('static',filename='after_zan.png')}}" />{{_("点赞")}}
+    (<span>{{ post.thumbers.count() }}</span>)</a>
+</li>
+</ul>
 {% endif %}
+{% include "_comment_form.html" %}

@@ -1,29 +1,52 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% if g.comment_form %}
-<div id="commentForm{{post.id}}" class="row" style="display: none;">
-    <div class="col-md-4">
+<div id="commentForm{{post.id}}"  style="display: none;">
+	<table class="table">
+    <tr>
+       <td width="70px">
+            <a href="{{ url_for('main.user', username=post.author.username) }}">
+                <img class="img-thumbnail" src="{{ post.author.avatar(70) }}" />
+            </a>
+        </td>
+        <td>    	
     	<form id="commentData{{post.id}}" action="javascript:post_comment({{post.id}})" method="post">
         {{ wtf.quick_form(g.comment_form) }}
         </form>
-        <hr>
-    </div>
+        </td>
+    </tr>
+</table>
+
 </div>
 {% endif %}
+
 {% if post.comments.count() > 0 %}
-<div id="commentList{{post.id}}" style="display: none;">
+<div class="anyidian" id="commentList{{post.id}}" style="display: none;">
+<table class="table table-hover">
 {% with comments = post.comments.all()[::-1] %}
 {% for comment in comments %}
-<a href="{{ url_for('main.user', username=comment.author.username) }}">
+<tr>
+   <td width="70px">
+        <a href="{{ url_for('main.user', username=comment.author.username) }}">
+            <img class="img-thumbnail" src="{{ comment.author.avatar(70) }}" />
+        </a>
+
+</td>
+<td>
+	<a href="{{ url_for('main.user', username=comment.author.username) }}">
     {{ comment.author.username }}
 </a>
 （{{ moment(comment.timestamp).fromNow() }}）{{_('说')}}:
 <span>{{ comment.body }}</span>
 <br>
-<hr>
+</td>
 {% endfor %}
 {% endwith %}
+</tr>
+</table>
+<p class="text-center" onclick="toggle_comment('{{post.id}}');">{{_("收起")}}</p>
 </div>
+
 {% endif %}
 
 
