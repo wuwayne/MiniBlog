@@ -2,7 +2,7 @@ function follow(username) {
     $.post('/follow',{
         user:username
     }).done(function(response){
-        $('#follower_num').text(response['follower_num'])
+        $('#follower_num em').text(response['follower_num'])
         $('#state_alert').show().text(response['state'])
         $('.follow_click').hide()
         $('.unfollow_click').show()
@@ -13,7 +13,7 @@ function unfollow(username) {
     $.post('/unfollow',{
         user:username
     }).done(function(response){
-        $('#follower_num').text(response['follower_num'])
+        $('#follower_num em').text(response['follower_num'])
         $('#state_alert').show().text(response['state'])
         $('.unfollow_click').hide()
         $('.follow_click').show()
