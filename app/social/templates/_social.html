@@ -22,7 +22,7 @@
 <!-- 评论 -->
 
 <li>
-	<a href="javascript:toggle_comment('{{post.id}}');"><img src="{{url_for('static',filename='pl.png')}}" />
+	<a id="comment{{post.id}}" href="javascript:toggle_comment('{{post.id}}');"><img src="{{url_for('static',filename='pl.png')}}" />
     {{_("评论")}}(<span>{{ post.comments.count() }}</span>)</a>
 </li>
 

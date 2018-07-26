@@ -94,8 +94,8 @@ function post_comment(id) {
         id:id,
         comment:$("#commentData"+id+' '+"textarea").val()
     }).done(function (response) {
+        $('#commentList'+id+' '+'table').append()
         $("#commentData"+id+' '+"textarea").val("");
         $('#comment'+id+ ' span').text(response['comment_num'])
     })  
 };
-
