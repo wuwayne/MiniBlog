@@ -21,9 +21,6 @@ def post_comment():
 
 	return jsonify({
 					'comment_num':post.comments.count(),
+					'avatarURL':current_user.avatar(70),
+					'comment_username':current_user.username,
 		})
-
-
-@bp.route('/get_comment',methods=['POST'])
-def get_comment():
-	pass

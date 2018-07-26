@@ -90,11 +90,17 @@ function toggle_comment(id) {
 }
 
 function post_comment(id) {
+    var c=$("#commentData"+id+' '+"textarea").val();
     $.post('/post_comment',{
         id:id,
-        comment:$("#commentData"+id+' '+"textarea").val()
+        comment:c
     }).done(function (response) {
-        $('#commentList'+id+' '+'table').append()
+        var a=$("<tr><td width='70px'><img class='img-thumbnail avatarURL' src='' /></td><td><span class='comment_username'></span>（刚刚）说:<span class='body'></span><br></td></tr>")
+        $('.avatarURL',a).attr('src',response['avatarURL'])
+        $('.comment_username',a).text(response['comment_username'])
+        $('.body',a).text(c)
+
+        $('#commentList'+id+' '+'table').prepend(a)
         $("#commentData"+id+' '+"textarea").val("");
         $('#comment'+id+ ' span').text(response['comment_num'])
     })  
